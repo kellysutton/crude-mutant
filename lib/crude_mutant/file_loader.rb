@@ -16,7 +16,7 @@ module CrudeMutant
     end
 
     def contents_as_array
-
+      @contents_as_array
     end
 
     def without_line(line_number)

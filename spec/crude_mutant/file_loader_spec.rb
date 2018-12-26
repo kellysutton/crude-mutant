@@ -34,4 +34,27 @@ RSpec.describe CrudeMutant::FileLoader do
       it { is_expected.to eq(3) }
     end
   end
+
+  describe '#contents_as_array' do
+    subject { described_class.load(file_path).contents_as_array }
+
+    it { is_expected.to eq([]) }
+
+    context 'file has 3 lines' do
+      before do
+        @tempfile.write("hi\n")
+        @tempfile.write("hello\n")
+        @tempfile.write("howdy\n")
+        @tempfile.flush
+      end
+
+      it do
+        is_expected.to eq([
+          "hi\n",
+          "hello\n",
+          "howdy\n"
+        ])
+      end
+    end
+  end
 end
