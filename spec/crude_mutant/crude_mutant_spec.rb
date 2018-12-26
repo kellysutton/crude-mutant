@@ -94,10 +94,10 @@ RSpec.describe CrudeMutant do
 
       before { allow(block).to receive(:call) }
 
-      it 'calls the block with a RunResult' do
+      it 'calls the block with a Progress' do
         subject
         expect(block).to have_received(:call).
-          with(an_instance_of(described_class::RunResult)).
+          with(an_instance_of(described_class::Progress)).
           exactly(3).times
       end
     end
