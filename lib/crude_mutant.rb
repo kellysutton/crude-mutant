@@ -8,9 +8,10 @@ module CrudeMutant
 
   def self.start(file_path, test_command)
     file = FileLoader.load(file_path)
-    file.lines_in_file.times.each do |line_number|
+
+    success_map = file.lines_in_file.times.map do |line_number|
       FileWriter.write(file_path, file.without_line(line_number))
-      Executor.call(test_command)
-    end
+      [line_number, Executor.call(test_command)]
+    end.to_h
   end
 end

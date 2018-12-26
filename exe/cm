@@ -3,5 +3,6 @@
 
 require "./lib/crude-mutant"
 
-CrudeMutant.start(ARGV[0], ARGV[1])
-
+file_to_mutate = ARGV[0]
+test_command = ARGV[1]
+puts CrudeMutant.start(file_to_mutate, test_command)

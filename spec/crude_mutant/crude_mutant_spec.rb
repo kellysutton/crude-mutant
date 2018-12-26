@@ -1,4 +1,16 @@
 RSpec.describe CrudeMutant do
+  describe 'integration tests' do
+    it 'does not modify the file under test' do
+      expect(false).to eq(true)
+    end
+
+    context 'the program is quit early' do
+      it 'does not modify the file under test' do
+        expect(false).to eq(true)
+      end
+    end
+  end
+
   it "has a version number" do
     expect(CrudeMutant::VERSION).not_to be nil
   end
