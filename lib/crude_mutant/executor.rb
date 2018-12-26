@@ -2,8 +2,9 @@
 
 module CrudeMutant
   class Executor
-    def self.call
-
+    def self.call(test_command)
+      `#{test_command}`
+      $?.success?
     end
   end
 end
