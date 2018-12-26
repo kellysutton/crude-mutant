@@ -13,5 +13,9 @@ module CrudeMutant
       FileWriter.write(file_path, file.without_line(line_number))
       [line_number, Executor.call(test_command)]
     end.to_h
+
+    FileWriter.write(file_path, file.contents_as_array)
+
+    success_map
   end
 end

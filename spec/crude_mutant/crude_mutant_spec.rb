@@ -1,7 +1,12 @@
 RSpec.describe CrudeMutant do
   describe 'integration tests' do
+    subject { described_class.start("README.md", "which ls") }
+    let(:file_path) { "README.md" }
+
     it 'does not modify the file under test' do
-      expect(false).to eq(true)
+      expect {
+        subject
+      }.not_to change{ File.read("README.md") }
     end
 
     context 'the program is quit early' do
