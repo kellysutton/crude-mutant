@@ -16,6 +16,16 @@ RSpec.describe CrudeMutant::FileLoader do
     subject { described_class.load(file_path) }
 
     it { is_expected.to be_a(described_class) }
+
+    context 'file_path is not a valid file' do
+      let(:file_path) { 'NOT_A_VALID_FILE' }
+
+      it 'raises a LoadError' do
+        expect {
+          subject
+        }.to raise_error(described_class::LoadError)
+      end
+    end
   end
 
   describe '#lines_in_file' do

@@ -2,7 +2,13 @@
 
 module CrudeMutant
   class FileLoader
+    class LoadError < StandardError; end
+
     def self.load(file_path)
+      if !File.exist?(file_path)
+        raise LoadError
+      end
+
       new(File.readlines(file_path))
     end
 
