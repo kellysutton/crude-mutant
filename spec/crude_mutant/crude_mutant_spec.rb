@@ -1,6 +1,7 @@
 RSpec.describe CrudeMutant do
   describe 'integration tests' do
-    subject { described_class.start("README.md", "which ls") }
+    subject { described_class.start("README.md", "which ls", &block) }
+    let(:block) { Proc.new {} }
     let(:file_path) { "README.md" }
 
     it 'does not modify the file under test' do
@@ -27,12 +28,13 @@ RSpec.describe CrudeMutant do
   end
 
   describe '.start' do
-    subject { described_class.start(file_path, test_command) }
+    subject { described_class.start(file_path, test_command, &block) }
     let(:file_path) { double }
     let(:test_command) { double }
     let(:file_loader) { instance_double(described_class::FileLoader) }
     let(:lines_in_file) { 3 }
     let(:file_contents) { ["hi", "hello", "howdy"] }
+    let(:block) { Proc.new {} }
 
     before do
       allow(described_class::FileLoader).to receive(:load).
@@ -84,6 +86,19 @@ RSpec.describe CrudeMutant do
       it 'does not execute anything' do
         subject
         expect(described_class::Executor).not_to have_received(:call)
+      end
+    end
+
+    context 'a useful block is provided' do
+      let(:block) { Proc.new{} }
+
+      before { allow(block).to receive(:call) }
+
+      it 'calls the block with a RunResult' do
+        subject
+        expect(block).to have_received(:call).
+          with(an_instance_of(described_class::RunResult)).
+          exactly(3).times
       end
     end
   end
