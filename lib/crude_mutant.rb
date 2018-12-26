@@ -1,7 +1,7 @@
-require "crude_mutant/version"
-require "crude_mutant/executor"
-require "crude_mutant/file_loader"
-require "crude_mutant/file_writer"
+require_relative "crude_mutant/version"
+require_relative "crude_mutant/executor"
+require_relative "crude_mutant/file_loader"
+require_relative "crude_mutant/file_writer"
 
 module CrudeMutant
   class Error < StandardError; end
