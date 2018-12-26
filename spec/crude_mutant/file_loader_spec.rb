@@ -57,4 +57,48 @@ RSpec.describe CrudeMutant::FileLoader do
       end
     end
   end
+
+  describe '#without_line' do
+    subject { described_class.load(file_path).without_line(line_number) }
+
+    before do
+      @tempfile.write("hi\n")
+      @tempfile.write("hello\n")
+      @tempfile.write("howdy\n")
+      @tempfile.flush
+    end
+
+    context 'line_number is 0' do
+      let(:line_number) { 0 }
+
+      it do
+        is_expected.to eq([
+          "hello\n",
+          "howdy\n"
+        ])
+      end
+    end
+
+    context 'line_number is 0' do
+      let(:line_number) { 1 }
+
+      it do
+        is_expected.to eq([
+          "hi\n",
+          "howdy\n"
+        ])
+      end
+    end
+
+    context 'line_number is 0' do
+      let(:line_number) { 2 }
+
+      it do
+        is_expected.to eq([
+          "hi\n",
+          "hello\n"
+        ])
+      end
+    end
+  end
 end

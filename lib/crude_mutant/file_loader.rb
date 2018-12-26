@@ -20,7 +20,8 @@ module CrudeMutant
     end
 
     def without_line(line_number)
-
+      contents_as_array.slice(0, line_number) +
+        contents_as_array.slice(line_number + 1, lines_in_file)
     end
   end
 end
