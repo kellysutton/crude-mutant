@@ -9,12 +9,15 @@ module CrudeMutant
   def self.start(file_path, test_command)
     file = FileLoader.load(file_path)
 
-    success_map = file.lines_in_file.times.map do |line_number|
-      FileWriter.write(file_path, file.without_line(line_number))
-      [line_number, Executor.call(test_command)]
-    end.to_h
-
-    FileWriter.write(file_path, file.contents_as_array)
+    success_map = {}
+    begin
+      success_map = file.lines_in_file.times.map do |line_number|
+        FileWriter.write(file_path, file.without_line(line_number))
+        [line_number, Executor.call(test_command)]
+      end.to_h
+    ensure
+      FileWriter.write(file_path, file.contents_as_array)
+    end
 
     success_map
   end

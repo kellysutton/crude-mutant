@@ -11,7 +11,13 @@ RSpec.describe CrudeMutant do
 
     context 'the program is quit early' do
       it 'does not modify the file under test' do
-        expect(false).to eq(true)
+
+        expect(described_class::Executor).to receive(:call).and_raise(StandardError)
+        expect {
+          expect {
+            subject
+          }.to raise_error(StandardError)
+        }.not_to change{ File.read("README.md") }
       end
     end
   end
