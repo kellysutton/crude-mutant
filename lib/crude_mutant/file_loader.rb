@@ -9,5 +9,13 @@ module CrudeMutant
     def lines_in_file
 
     end
+
+    def contents_as_array
+
+    end
+
+    def without_line(line_number)
+
+    end
   end
 end
