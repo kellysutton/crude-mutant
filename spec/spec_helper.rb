@@ -1,5 +1,5 @@
 require "bundler/setup"
-require "crude/mutant"
+require "crude_mutant"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure

@@ -1,16 +1,16 @@
 
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "crude/mutant/version"
+require "crude_mutant/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "crude-mutant"
-  spec.version       = Crude::Mutant::VERSION
+  spec.version       = CrudeMutant::VERSION
   spec.authors       = ["Kelly Sutton"]
   spec.email         = ["kelly.sutton@gusto.com"]
 
-  spec.summary = "A simple mutation testing gem" 
-  spec.description = "A simple mutation testing gem" 
+  spec.summary = "A simple mutation testing gem"
+  spec.description = "A simple mutation testing gem"
   #spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
