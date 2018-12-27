@@ -30,6 +30,10 @@ You can also use the shortened `cm`:
 cm "app/models/post.rb" "bundle exec rspec"
 ```
 
+## See Also
+
+If you’re looking for more serious mutation testing, please have a look at the [mutant](https://github.com/mbj/mutant) gem.
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
