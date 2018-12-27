@@ -45,7 +45,7 @@ RSpec.describe CrudeMutant do
       allow(file_loader).to receive(:without_line).with(0).and_return(["hello", "howdy"])
       allow(file_loader).to receive(:without_line).with(1).and_return(["hi", "howdy"])
       allow(file_loader).to receive(:without_line).with(2).and_return(["hi", "hello"])
-      allow(described_class::Executor).to receive(:call)
+      allow(described_class::Executor).to receive(:call).and_return(true)
       allow(described_class::FileWriter).to receive(:write)
       allow(described_class::ResultPrinter).to receive(:print)
     end
@@ -58,7 +58,7 @@ RSpec.describe CrudeMutant do
       subject
       expect(described_class::Executor).to have_received(:call).
         with(test_command).
-        exactly(3).times
+        exactly(4).times
     end
 
     it 'uses FileWriter to overwrite the given file, then calls the executor' do
@@ -77,7 +77,7 @@ RSpec.describe CrudeMutant do
 
       expect(described_class::Executor).to have_received(:call).
         with(test_command).
-        exactly(3).times
+        exactly(4).times
     end
 
     it 'sends the results to ResultPrinter' do
@@ -91,7 +91,7 @@ RSpec.describe CrudeMutant do
 
       it 'does not execute anything' do
         subject
-        expect(described_class::Executor).not_to have_received(:call)
+        expect(described_class::Executor).to have_received(:call).once
       end
     end
 
@@ -107,6 +107,16 @@ RSpec.describe CrudeMutant do
         expect(block).to have_received(:call).
           with(an_instance_of(described_class::Progress)).
           exactly(3).times
+      end
+    end
+
+    context 'neutral case error' do
+      before { allow(described_class::Executor).to receive(:call).with(test_command).and_return(false) }
+
+      it do
+        expect {
+          subject
+        }.to raise_error(described_class::NeutralCaseError)
       end
     end
   end

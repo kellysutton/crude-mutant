@@ -14,11 +14,18 @@ require "crude_mutant/version"
 
 module CrudeMutant
   class Error < StandardError; end
+  class NeutralCaseError < StandardError; end
 
   class << self
     def start(file_path, test_command, &block)
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
+
+      initial_success = Executor.call(test_command)
+
+      if !initial_success
+        raise NeutralCaseError, 'Initial test run did not succeed'
+      end
 
       begin
         line_number = -1
