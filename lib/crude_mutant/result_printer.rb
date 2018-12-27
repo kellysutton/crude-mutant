@@ -11,8 +11,9 @@ module CrudeMutant
         $stdout.print "Performed #{result.run_results.size} line mutations in total.\n"
         $stdout.print "There are #{result.successful_runs_even_with_mutations.size} problematic lines:\n"
 
+        number_of_line_digits = Math.log10(result.successful_runs_even_with_mutations.size).to_i + 1
         result.successful_runs_even_with_mutations.each do |run_result|
-          $stdout.print "#{run_result.line_number}:  #{red(run_result.line_contents)}\n"
+          $stdout.print "#{run_result.line_number.to_s.rjust(number_of_line_digits, ' ')}:  #{red(run_result.line_contents)}\n"
         end
         $stdout.flush
       end
