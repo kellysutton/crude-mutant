@@ -11,8 +11,8 @@ module CrudeMutant
         stream.print clear_string
         stream.print "\r"
 
-        number_of_line_digits = result.successful_runs_even_with_mutations.size > 0 ?
-          Math.log10(result.successful_runs_even_with_mutations.size).to_i + 1 :
+        number_of_line_digits = result.run_results.size > 0 ?
+          Math.log10(result.run_results.size).to_i + 1 :
           0
 
         result.run_results.each do |run_result|
@@ -24,7 +24,8 @@ module CrudeMutant
             line += "#{green(run_result.line_contents.slice(0, term_width - line.size))}"
           end
 
-          stream.print "#{line}\n"
+          line += "\n" if !line.include?("\n")
+          stream.print "#{line}"
         end
 
         stream.print "Finished mutating #{result.file_path}. ^^^ Results above ^^^\n"
