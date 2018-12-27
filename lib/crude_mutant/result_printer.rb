@@ -28,6 +28,7 @@ module CrudeMutant
           stream.print "#{line}"
         end
 
+        stream.print "\n"
         stream.print "Finished mutating #{result.file_path}. ^^^ Results above ^^^\n"
         stream.print "Performed #{result.run_results.size} line mutations in total.\n"
         stream.print "There are #{red(result.successful_runs_even_with_mutations.size)} #{red('problematic lines')}:\n"
