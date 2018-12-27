@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "benchmark"
+
 require "crude_mutant/executor"
 require "crude_mutant/file_loader"
 require "crude_mutant/file_writer"
@@ -47,15 +49,19 @@ module CrudeMutant
     private
 
     def perform_run(file_loader, test_command, line_number)
-      FileWriter.write(file_loader.file_path, file_loader.without_line(line_number))
+      success = false
+      bench = Benchmark.measure do
+        FileWriter.write(file_loader.file_path, file_loader.without_line(line_number))
 
-      success = Executor.call(test_command)
+        success = Executor.call(test_command)
+      end
 
       RunResult.new(
         file_loader.file_path,
         line_number,
         success,
-        file_loader.contents_as_array[line_number]
+        file_loader.contents_as_array[line_number],
+        bench
       )
     end
   end
