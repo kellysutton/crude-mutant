@@ -22,5 +22,31 @@ RSpec.describe CrudeMutant::Result do
 
       it { is_expected.to eq([successful_run]) }
     end
+
+    context 'there were mutations that past but their lines were blank' do
+      let(:run_results) do
+        [
+          blank_successful,
+          nonblank_successful
+        ]
+      end
+
+      let(:blank_successful) do
+        instance_double(
+          CrudeMutant::RunResult,
+          success?: true,
+          line_contents: "        \n"
+        )
+      end
+      let(:nonblank_successful) do
+        instance_double(
+          CrudeMutant::RunResult,
+          success?: true,
+          line_contents: "def method(name)"
+        )
+      end
+
+      it { is_expected.to eq([nonblank_successful]) }
+    end
   end
 end
