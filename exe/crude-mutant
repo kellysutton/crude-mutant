@@ -1,0 +1,15 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require "./lib/crude-mutant"
+
+file_to_mutate = ARGV[0]
+test_command = ARGV[1]
+
+CrudeMutant.start(file_to_mutate, test_command) do |progress|
+  clear_string = ' ' * 80
+  $stdout.print clear_string
+  $stdout.print "\r"
+  $stdout.print "Completed #{progress.run_result.line_number + 1}/#{progress.total_runs_to_perform}\r"
+  $stdout.flush
+end
