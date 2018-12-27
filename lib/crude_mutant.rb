@@ -20,12 +20,10 @@ module CrudeMutant
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
 
-      test_runs = []
       begin
         line_number = -1
         test_runs = file.contents_as_array.reduce([]) do |acc, contents|
           line_number += 1
-          result = nil
 
           if contents.strip.size != 0
             result = [perform_run(
