@@ -1,4 +1,4 @@
-# crude-mutant ![https://travis-ci.org/kellysutton/crude-mutant.svg?branch=master](https://travis-ci.org/kellysutton/crude-mutant)
+# crude-mutant ![https://travis-ci.org/kellysutton/crude-mutant](https://travis-ci.org/kellysutton/crude-mutant.svg?branch=master)
 
 A Ruby-based, language-agnostic tool for performing [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) on a file.
 
