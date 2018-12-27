@@ -1,1 +1,1 @@
-require_relative "crude_mutant"
+require "crude_mutant"

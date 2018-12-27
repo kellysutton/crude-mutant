@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
-require_relative "crude_mutant/executor"
-require_relative "crude_mutant/file_loader"
-require_relative "crude_mutant/file_writer"
-require_relative "crude_mutant/progress"
-require_relative "crude_mutant/result"
-require_relative "crude_mutant/run_result"
-require_relative "crude_mutant/version"
+require "crude_mutant/executor"
+require "crude_mutant/file_loader"
+require "crude_mutant/file_writer"
+require "crude_mutant/progress"
+require "crude_mutant/result"
+require "crude_mutant/run_result"
+require "crude_mutant/version"
 
 module CrudeMutant
   class Error < StandardError; end

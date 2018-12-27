@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
 # frozen_string_literal: true
 
-require "./lib/crude-mutant"
+require "crude-mutant"
 
 file_to_mutate = ARGV[0]
 test_command = ARGV[1]
