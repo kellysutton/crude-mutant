@@ -1,36 +1,23 @@
-require_relative "crude_mutant/version"
+# frozen_string_literal: true
+
 require_relative "crude_mutant/executor"
 require_relative "crude_mutant/file_loader"
 require_relative "crude_mutant/file_writer"
+require_relative "crude_mutant/progress"
+require_relative "crude_mutant/result"
+require_relative "crude_mutant/run_result"
+require_relative "crude_mutant/version"
 
 module CrudeMutant
   class Error < StandardError; end
-  class RunResult
-    attr_reader :file_path, :line_number, :success
-
-    def initialize(file_path, line_number, success)
-      @file_path = file_path
-      @line_number = line_number
-      @success = success
-    end
-  end
-
-  class Progress
-    attr_reader :run_result, :total_runs_to_perform
-
-    def initialize(total_runs_to_perform, run_result)
-      @total_runs_to_perform = total_runs_to_perform
-      @run_result = run_result
-    end
-  end
 
   def self.start(file_path, test_command, &block)
     file = FileLoader.load(file_path)
     num_lines_in_file = file.lines_in_file
 
-    success_map = {}
+    test_runs = []
     begin
-      success_map = file.lines_in_file.times.map do |line_number|
+      test_runs = file.lines_in_file.times.map do |line_number|
         FileWriter.write(file_path, file.without_line(line_number))
         success = Executor.call(test_command)
         result = Progress.new(
@@ -44,6 +31,6 @@ module CrudeMutant
       FileWriter.write(file_path, file.contents_as_array)
     end
 
-    success_map
+    Result.new(file_path, test_runs)
   end
 end
