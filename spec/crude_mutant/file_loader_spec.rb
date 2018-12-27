@@ -28,6 +28,12 @@ RSpec.describe CrudeMutant::FileLoader do
     end
   end
 
+  describe '#file_path' do
+    subject { described_class.load(file_path).file_path }
+
+    it { is_expected.to eq(file_path) }
+  end
+
   describe '#lines_in_file' do
     subject { described_class.load(file_path).lines_in_file }
 

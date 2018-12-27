@@ -9,10 +9,13 @@ module CrudeMutant
         raise LoadError
       end
 
-      new(File.readlines(file_path))
+      new(file_path, File.readlines(file_path))
     end
 
-    def initialize(contents_as_array)
+    attr_reader :file_path
+
+    def initialize(file_path, contents_as_array)
+      @file_path = file_path
       @contents_as_array = contents_as_array
     end
     private_class_method :new
