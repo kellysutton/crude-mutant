@@ -2,6 +2,8 @@
 
 A Ruby-based, language-agnostic tool for performing [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) on a file.
 
+Mutation testing is the act of modifying production code and seeing if the tests still pass. If the tests still pass, you have some effectively useless code (according to the tests). This can be helpful to determine how good a file’s tests are and what code might be useless. This can be much more helpful than traditional code coverage tools, as they will only tell you if a line executes and not if the line is necessary to the program.
+
 This tool is relatively crude (hence the name) in that it will just remove lines one by one to detect which is a dangerous mutation (i.e. a line removed where all tests still pass).
 
 ## Installation
