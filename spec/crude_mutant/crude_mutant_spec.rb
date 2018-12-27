@@ -47,7 +47,7 @@ RSpec.describe CrudeMutant do
       allow(file_loader).to receive(:without_line).with(2).and_return(["hi", "hello"])
       allow(described_class::Executor).to receive(:call)
       allow(described_class::FileWriter).to receive(:write)
-
+      allow(described_class::ResultPrinter).to receive(:print)
     end
 
     it 'does not error' do
@@ -78,6 +78,12 @@ RSpec.describe CrudeMutant do
       expect(described_class::Executor).to have_received(:call).
         with(test_command).
         exactly(3).times
+    end
+
+    it 'sends the results to ResultPrinter' do
+      subject
+      expect(described_class::ResultPrinter).to have_received(:print).
+        with(an_instance_of(described_class::Result))
     end
 
     context 'no lines in the file' do
