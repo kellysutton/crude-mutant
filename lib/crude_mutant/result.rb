@@ -8,7 +8,9 @@ module CrudeMutant
     end
 
     def successful_runs_even_with_mutations
-      @run_results.select{ |rr| rr.success? }
+      @run_results.
+        select{ |rr| rr.success? }.
+        reject{ |rr| rr.line_contents.strip.size == 0 }
     end
   end
 end

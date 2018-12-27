@@ -17,8 +17,20 @@ RSpec.describe CrudeMutant::Result do
           failed_run
         ]
       end
-      let(:successful_run) { instance_double(CrudeMutant::RunResult, success?: true) }
-      let(:failed_run) { instance_double(CrudeMutant::RunResult, success?: false) }
+      let(:successful_run) do
+        instance_double(
+          CrudeMutant::RunResult,
+          success?: true,
+          line_contents: 'yep'
+        )
+      end
+      let(:failed_run) do
+        instance_double(
+          CrudeMutant::RunResult,
+          success?: false,
+          line_contents: 'yep'
+        )
+      end
 
       it { is_expected.to eq([successful_run]) }
     end
