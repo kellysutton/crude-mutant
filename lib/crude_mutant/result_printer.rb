@@ -7,7 +7,8 @@ module CrudeMutant
         clear_string = ' ' * 80
         $stdout.print clear_string
         $stdout.print "\r"
-        $stdout.print "Finished.\n"
+        $stdout.print "Finished mutating #{result.file_path}.\n"
+        $stdout.print "Performed #{result.run_results.size} line mutations in total.\n"
         $stdout.print "There are #{result.successful_runs_even_with_mutations.size} problematic lines:\n"
 
         result.successful_runs_even_with_mutations.each do |run_result|

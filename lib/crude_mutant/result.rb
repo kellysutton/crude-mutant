@@ -2,6 +2,8 @@
 
 module CrudeMutant
   class Result
+    attr_reader :file_path, :run_results
+
     def initialize(file_path, run_results)
       @file_path = file_path
       @run_results = run_results
