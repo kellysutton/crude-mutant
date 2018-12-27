@@ -5,7 +5,7 @@ module CrudeMutant
     class LoadError < StandardError; end
 
     def self.load(file_path)
-      if !File.exist?(file_path)
+      if !file_path.is_a?(String) || !File.exist?(file_path)
         raise LoadError
       end
 

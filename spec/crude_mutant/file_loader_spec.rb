@@ -26,6 +26,16 @@ RSpec.describe CrudeMutant::FileLoader do
         }.to raise_error(described_class::LoadError)
       end
     end
+
+    context 'file_path is nil' do
+      let(:file_path) { nil }
+
+      it 'raises a LoadError' do
+        expect {
+          subject
+        }.to raise_error(described_class::LoadError)
+      end
+    end
   end
 
   describe '#file_path' do
