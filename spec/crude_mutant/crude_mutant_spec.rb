@@ -87,7 +87,7 @@ RSpec.describe CrudeMutant do
     end
 
     context 'no lines in the file' do
-      let(:lines_in_file) { 0 }
+      let(:file_contents) { ["   \n"] }
 
       it 'does not execute anything' do
         subject
