@@ -31,7 +31,7 @@ module CrudeMutant
           num_lines_in_file,
           result
         )
-        block.call(progress)
+        block.call(progress) if block_given?
         result
       end
     ensure

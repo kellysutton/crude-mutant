@@ -28,13 +28,13 @@ RSpec.describe CrudeMutant do
   end
 
   describe '.start' do
-    subject { described_class.start(file_path, test_command, &block) }
+    subject { described_class.start(file_path, test_command) }
+
     let(:file_path) { double }
     let(:test_command) { double }
     let(:file_loader) { instance_double(described_class::FileLoader) }
     let(:lines_in_file) { 3 }
     let(:file_contents) { ["hi", "hello", "howdy"] }
-    let(:block) { Proc.new {} }
 
     before do
       allow(described_class::FileLoader).to receive(:load).
@@ -89,7 +89,9 @@ RSpec.describe CrudeMutant do
       end
     end
 
-    context 'a useful block is provided' do
+    context 'a  block is provided' do
+      subject { described_class.start(file_path, test_command, &block) }
+
       let(:block) { Proc.new{} }
 
       before { allow(block).to receive(:call) }
