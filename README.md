@@ -1,28 +1,28 @@
-# Crude::Mutant
+# crude-mutant
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/crude/mutant`. To experiment with that code, run `bin/console` for an interactive prompt.
+A Ruby-based, language-agnostic tool for performing [mutation testing](https://en.wikipedia.org/wiki/Mutation_testing) on a file.
 
-TODO: Delete this and the text above, and describe your gem
+This tool is relatively crude (hence the name) in that it will just remove lines one by one to detect which is a dangerous mutation (i.e. a line removed where all tests still pass).
 
 ## Installation
 
-Add this line to your application's Gemfile:
+In your preferred shell…
 
-```ruby
-gem 'crude-mutant'
 ```
-
-And then execute:
-
-    $ bundle
-
-Or install it yourself as:
-
-    $ gem install crude-mutant
+gem install crude-mutant
+```
 
 ## Usage
 
-TODO: Write usage instructions here
+The script is started by providing the file you wish to modify and then the command used to test the code.
+
+It's assumed that the command will return a non-zero status code on test failure.
+
+Here's a Ruby-centric example:
+
+```
+crude-mutant "app/models/post.rb" "bundle exec rspec"
+```
 
 ## Development
 
@@ -32,7 +32,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/crude-mutant. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
+Bug reports and pull requests are welcome on GitHub at https://github.com/kellysutton/crude-mutant. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [Contributor Covenant](http://contributor-covenant.org) code of conduct.
 
 ## License
 
@@ -40,4 +40,4 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Code of Conduct
 
-Everyone interacting in the Crude::Mutant project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/[USERNAME]/crude-mutant/blob/master/CODE_OF_CONDUCT.md).
+Everyone interacting in the Crude::Mutant project’s codebases, issue trackers, chat rooms and mailing lists is expected to follow the [code of conduct](https://github.com/kellysutton/crude-mutant/blob/master/CODE_OF_CONDUCT.md).
