@@ -7,6 +7,8 @@ module CrudeMutant
         contents_as_array.each do |line|
           f.write(line)
         end
+
+        f.flush
       end
     end
   end
