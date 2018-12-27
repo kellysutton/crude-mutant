@@ -8,7 +8,7 @@ module CrudeMutant
         $stdout.print clear_string
         $stdout.print "\r"
         $stdout.print "Finished.\n"
-        $stdout.print "There are #{result.number_of_successful_runs_even_with_mutations} problematic lines:\n"
+        $stdout.print "There are #{result.successful_runs_even_with_mutations.size} problematic lines:\n"
 
         result.successful_runs_even_with_mutations.each do |run_result|
           $stdout.print "#{run_result.line_number}:  #{red(run_result.line_contents)}\n"
