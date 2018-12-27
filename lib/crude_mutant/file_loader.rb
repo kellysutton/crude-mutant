@@ -6,7 +6,7 @@ module CrudeMutant
 
     def self.load(file_path)
       if !file_path.is_a?(String) || !File.exist?(file_path)
-        raise LoadError
+        raise LoadError, "Could not load file: #{file_path}"
       end
 
       new(file_path, File.readlines(file_path))

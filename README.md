@@ -23,13 +23,13 @@ It's assumed that the command will return a non-zero status code on test failure
 Here's a Ruby-centric example:
 
 ```
-crude-mutant "app/models/post.rb" "bundle exec rspec"
+crude-mutant "bundle exec rspec" "app/models/post.rb"
 ```
 
 You can also use the shortened `cm`:
 
 ```
-cm "app/models/post.rb" "bundle exec rspec"
+cm "bundle exec rspec" "app/models/post.rb"
 ```
 
 ## See Also

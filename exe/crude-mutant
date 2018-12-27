@@ -3,8 +3,16 @@
 
 require "crude-mutant"
 
-file_to_mutate = ARGV[0]
-test_command = ARGV[1]
+test_command = ARGV[0]
+file_to_mutate = ARGV[1]
+
+if !file_to_mutate || !test_command
+  puts "Usage: crude-mutant [test command] [file to mutate]"
+  puts ""
+  puts "Example:"
+  puts "  crude-mutant \"bundle exec rspec\" app/models/post.rb"
+  exit(1)
+end
 
 CrudeMutant.start(file_to_mutate, test_command) do |progress|
   clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
