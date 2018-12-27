@@ -3,19 +3,27 @@
 module CrudeMutant
   class ResultPrinter
     class << self
-      def print(result)
+      def print(result, stream = $stdout)
         clear_string = ' ' * 80
-        $stdout.print clear_string
-        $stdout.print "\r"
-        $stdout.print "Finished mutating #{result.file_path}.\n"
-        $stdout.print "Performed #{result.run_results.size} line mutations in total.\n"
-        $stdout.print "There are #{result.successful_runs_even_with_mutations.size} problematic lines:\n"
+        stream.print clear_string
+        stream.print "\r"
 
         number_of_line_digits = Math.log10(result.successful_runs_even_with_mutations.size).to_i + 1
-        result.successful_runs_even_with_mutations.each do |run_result|
-          $stdout.print "#{run_result.line_number.to_s.rjust(number_of_line_digits, ' ')}:  #{red(run_result.line_contents)}\n"
+        result.run_results.each do |run_result|
+          stream.print "#{run_result.line_number.to_s.rjust(number_of_line_digits, ' ')}: "
+
+          if run_result.success?
+            stream.print "#{red(run_result.line_contents)}\n"
+          else
+            stream.print "#{green(run_result.line_contents)}\n"
+          end
         end
-        $stdout.flush
+
+        stream.print "Finished mutating #{result.file_path}. ^^^ Results above ^^^\n"
+        stream.print "Performed #{result.run_results.size} line mutations in total.\n"
+        stream.print "There are #{red(result.successful_runs_even_with_mutations.size)} #{red('problematic lines')}:\n"
+
+        stream.flush
       end
 
       private
