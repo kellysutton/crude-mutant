@@ -32,7 +32,7 @@ RSpec.describe CrudeMutant do
 
     let(:file_path) { double }
     let(:test_command) { double }
-    let(:file_loader) { instance_double(described_class::FileLoader) }
+    let(:file_loader) { instance_double(described_class::FileLoader, file_path: file_path) }
     let(:lines_in_file) { 3 }
     let(:file_contents) { ["hi", "hello", "howdy"] }
 

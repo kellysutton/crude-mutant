@@ -12,34 +12,49 @@ require "crude_mutant/version"
 module CrudeMutant
   class Error < StandardError; end
 
-  def self.start(file_path, test_command, &block)
-    file = FileLoader.load(file_path)
-    num_lines_in_file = file.lines_in_file
+  class << self
+    def start(file_path, test_command, &block)
+      file = FileLoader.load(file_path)
+      num_lines_in_file = file.lines_in_file
 
-    test_runs = []
-    begin
-      test_runs = file.lines_in_file.times.map do |line_number|
-        FileWriter.write(file_path, file.without_line(line_number))
-        success = Executor.call(test_command)
-        result = RunResult.new(
-          file_path,
-          line_number,
-          success,
-          file.contents_as_array[line_number]
-        )
-        progress = Progress.new(
-          num_lines_in_file,
+      test_runs = []
+      begin
+        test_runs = file.lines_in_file.times.map do |line_number|
+          result = perform_run(
+            file,
+            test_command,
+            line_number
+          )
+
+          progress = Progress.new(
+            num_lines_in_file,
+            result
+          )
+          block.call(progress) if block_given?
           result
-        )
-        block.call(progress) if block_given?
-        result
+        end
+      ensure
+        FileWriter.write(file_path, file.contents_as_array)
       end
-    ensure
-      FileWriter.write(file_path, file.contents_as_array)
+
+      ResultPrinter.print(
+        Result.new(file_path, test_runs)
+      )
     end
 
-    ResultPrinter.print(
-      Result.new(file_path, test_runs)
-    )
+    private
+
+    def perform_run(file_loader, test_command, line_number)
+      FileWriter.write(file_loader.file_path, file_loader.without_line(line_number))
+
+      success = Executor.call(test_command)
+
+      RunResult.new(
+        file_loader.file_path,
+        line_number,
+        success,
+        file_loader.contents_as_array[line_number]
+      )
+    end
   end
 end
