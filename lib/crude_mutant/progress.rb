@@ -2,11 +2,15 @@
 
 module CrudeMutant
   class Progress
-    attr_reader :run_result, :total_runs_to_perform
+    attr_reader :run_results, :total_runs_to_perform
 
-    def initialize(total_runs_to_perform, run_result)
+    def initialize(total_runs_to_perform, run_results)
       @total_runs_to_perform = total_runs_to_perform
-      @run_result = run_result
+      @run_results = run_results
+    end
+
+    def avg_time
+      @run_results.map(&:time_taken).sum / @run_results.size
     end
   end
 end

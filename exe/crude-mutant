@@ -7,9 +7,14 @@ file_to_mutate = ARGV[0]
 test_command = ARGV[1]
 
 CrudeMutant.start(file_to_mutate, test_command) do |progress|
-  clear_string = ' ' * 80
+  clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
   $stdout.print clear_string
   $stdout.print "\r"
-  $stdout.print "Completed #{progress.run_result.line_number + 1}/#{progress.total_runs_to_perform}\r"
+
+  completed = "Completed #{progress.run_results.size}/#{progress.total_runs_to_perform}"
+  average = "Average time per run: #{progress.avg_time.round(2)} second(s)"
+  eta_time = (progress.total_runs_to_perform - progress.run_results.size) * progress.avg_time
+  eta = "Estimated time of completion: #{eta_time.round(2)} seconds"
+  $stdout.print "#{completed} #{average} #{eta}\r"
   $stdout.flush
 end

@@ -15,5 +15,29 @@ module CrudeMutant
     def success?
       success
     end
+
+    def time_taken
+      @benchmark.real
+    end
+  end
+
+  class NullRunResult
+    attr_reader :line_number
+
+    def initialize(line_number)
+      @line_number = line_number
+    end
+
+    def success?
+      false
+    end
+
+    def time_taken
+      0.0
+    end
+
+    def line_contents
+      ''
+    end
   end
 end

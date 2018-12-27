@@ -1,22 +1,30 @@
 # frozen_string_literal: true
 
+require "crude_mutant/terminal_calculator"
+
 module CrudeMutant
   class ResultPrinter
     class << self
       def print(result, stream = $stdout)
-        clear_string = ' ' * 80
+        term_width = CrudeMutant::TerminalCalculator.new.calculate_length
+        clear_string = ' ' * term_width
         stream.print clear_string
         stream.print "\r"
 
-        number_of_line_digits = Math.log10(result.successful_runs_even_with_mutations.size).to_i + 1
+        number_of_line_digits = result.successful_runs_even_with_mutations.size > 0 ?
+          Math.log10(result.successful_runs_even_with_mutations.size).to_i + 1 :
+          0
+
         result.run_results.each do |run_result|
-          stream.print "#{run_result.line_number.to_s.rjust(number_of_line_digits, ' ')}: "
+          line = "#{run_result.line_number.to_s.rjust(number_of_line_digits, ' ')}: "
 
           if run_result.success?
-            stream.print "#{red(run_result.line_contents)}\n"
+            line += "#{red(run_result.line_contents.slice(0, term_width - line.size))}"
           else
-            stream.print "#{green(run_result.line_contents)}\n"
+            line += "#{green(run_result.line_contents.slice(0, term_width - line.size))}"
           end
+
+          stream.print "#{line}\n"
         end
 
         stream.print "Finished mutating #{result.file_path}. ^^^ Results above ^^^\n"

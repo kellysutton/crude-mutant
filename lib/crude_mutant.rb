@@ -9,6 +9,7 @@ require "crude_mutant/progress"
 require "crude_mutant/result"
 require "crude_mutant/result_printer"
 require "crude_mutant/run_result"
+require "crude_mutant/terminal_calculator"
 require "crude_mutant/version"
 
 module CrudeMutant
@@ -21,21 +22,31 @@ module CrudeMutant
 
       test_runs = []
       begin
-        test_runs = file.lines_in_file.times.map do |line_number|
-          result = perform_run(
-            file,
-            test_command,
-            line_number
-          )
+        line_number = -1
+        test_runs = file.contents_as_array.reduce([]) do |acc, contents|
+          line_number += 1
+          result = nil
 
-          progress = Progress.new(
-            num_lines_in_file,
-            result
-          )
+          if contents.strip.size != 0
+            result = [perform_run(
+              file,
+              test_command,
+              line_number
+            )]
+          else
+            result = [NullRunResult.new(line_number)]
+          end
 
-          block.call(progress) if block_given?
+          if block_given?
+            block.call(
+              Progress.new(
+                num_lines_in_file,
+                acc + result
+              )
+            )
+          end
 
-          result
+          acc + result
         end
       ensure
         FileWriter.write(file_path, file.contents_as_array)
