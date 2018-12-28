@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crude-mutant (0.2.2)
+    crude-mutant (0.2.3)
 
 GEM
   remote: https://rubygems.org/
