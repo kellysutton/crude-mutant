@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 RSpec.describe CrudeMutant::Result do
-  subject { described_class.new(file_path, run_results) }
+  subject { described_class.new(file_path, run_results, total_time) }
 
   let(:file_path) { double }
   let(:run_results) { [] }
+  let(:total_time) { double }
 
   describe '#successful_runs_even_with_mutations' do
     subject { super().successful_runs_even_with_mutations }

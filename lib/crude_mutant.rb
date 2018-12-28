@@ -18,6 +18,7 @@ module CrudeMutant
 
   class << self
     def start(file_path, test_command, &block)
+      start_time = Time.now.to_f
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
 
@@ -57,8 +58,10 @@ module CrudeMutant
         FileWriter.write(file_path, file.contents_as_array)
       end
 
+      stop_time = Time.now.to_f
+      total_time = stop_time - start_time
       ResultPrinter.print(
-        Result.new(file_path, test_runs)
+        Result.new(file_path, test_runs, total_time)
       )
     end
 

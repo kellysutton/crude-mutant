@@ -2,11 +2,12 @@
 
 module CrudeMutant
   class Result
-    attr_reader :file_path, :run_results
+    attr_reader :file_path, :run_results, :total_time
 
-    def initialize(file_path, run_results)
+    def initialize(file_path, run_results, total_time)
       @file_path = file_path
       @run_results = run_results
+      @total_time = total_time
     end
 
     def successful_runs_even_with_mutations
