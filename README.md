@@ -6,6 +6,8 @@ Mutation testing is the act of modifying production code and seeing if the tests
 
 This tool is relatively crude (hence the name) in that it will just remove lines one by one to detect which is a dangerous mutation (i.e. a line removed where all tests still pass).
 
+More around the inspiration in this blog post: [Better Code through Mutation Testing](https://kellysutton.com/2018/12/28/better-code-through-mutation-testing.html).
+
 ## Installation
 
 In your preferred shell…
