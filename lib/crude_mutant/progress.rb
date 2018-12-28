@@ -10,7 +10,7 @@ module CrudeMutant
     end
 
     def avg_time
-      @run_results.map(&:time_taken).sum / @run_results.size
+      @run_results.map(&:time_taken).reduce(:+) / @run_results.size
     end
   end
 end

@@ -12,5 +12,11 @@ RSpec.describe CrudeMutant::Progress do
     end
 
     it { is_expected.to eq(2.5) }
+
+    context 'there are no results' do
+      let(:run_results) { [] }
+
+      it { is_expected.to eq(0) }
+    end
   end
 end
