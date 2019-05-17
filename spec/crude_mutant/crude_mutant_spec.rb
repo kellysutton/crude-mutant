@@ -95,7 +95,39 @@ RSpec.describe CrudeMutant do
       end
     end
 
-    context 'a  block is provided' do
+    context 'section and total_section is provided' do
+      subject { described_class.start(file_path, test_command, section: section, total_sections: total_sections) }
+      let(:section) { 1 }
+      let(:total_sections) { 3 }
+
+      it 'only executes the first line' do
+        subject
+        expect(described_class::FileWriter).to have_received(:write).
+          with(file_path, ["hello", "howdy"]).
+          ordered
+
+        expect(described_class::Executor).to have_received(:call).
+          with(test_command).
+          exactly(2).times
+      end
+
+      context 'another section' do
+        let(:section) { 2 }
+
+        it 'only executes the second section' do
+          subject
+          expect(described_class::FileWriter).to have_received(:write).
+            with(file_path, ["hi", "howdy"]).
+            ordered
+
+          expect(described_class::Executor).to have_received(:call).
+            with(test_command).
+            exactly(2).times
+        end
+      end
+    end
+
+    context 'a block is provided' do
       subject { described_class.start(file_path, test_command, &block) }
 
       let(:block) { Proc.new{} }

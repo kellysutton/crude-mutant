@@ -17,10 +17,13 @@ module CrudeMutant
   class NeutralCaseError < StandardError; end
 
   class << self
-    def start(file_path, test_command, &block)
+    def start(file_path, test_command, section: 1, total_sections: 1, &block)
       start_time = Time.now.to_f
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
+      section_size = (num_lines_in_file.to_f / total_sections).ceil
+      starting_line_number = (section - 1) * section_size - 1
+      stopping_line_number = starting_line_number + section_size
 
       initial_success = Executor.call(test_command)
 
@@ -29,11 +32,11 @@ module CrudeMutant
       end
 
       begin
-        line_number = -1
+        line_number = starting_line_number
         test_runs = file.contents_as_array.reduce([]) do |acc, contents|
           line_number += 1
 
-          if contents.strip.size != 0
+          if (starting_line_number..stopping_line_number).cover?(line_number) && contents.strip.size != 0
             result = [perform_run(
               file,
               test_command,
