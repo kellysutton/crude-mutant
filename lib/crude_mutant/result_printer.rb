@@ -5,7 +5,7 @@ require "crude_mutant/terminal_calculator"
 module CrudeMutant
   class ResultPrinter
     class << self
-      def print(result, stream = $stdout)
+      def call(result, stream = $stdout)
         term_width = CrudeMutant::TerminalCalculator.new.calculate_length
         clear_string = ' ' * term_width
         stream.print clear_string

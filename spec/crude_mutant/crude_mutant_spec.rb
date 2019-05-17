@@ -47,7 +47,7 @@ RSpec.describe CrudeMutant do
       allow(file_loader).to receive(:without_line).with(2).and_return(["hi", "hello"])
       allow(described_class::Executor).to receive(:call).and_return(true)
       allow(described_class::FileWriter).to receive(:write)
-      allow(described_class::ResultPrinter).to receive(:print)
+      allow(described_class::ResultPrinter).to receive(:call)
     end
 
     it 'does not error' do
@@ -82,7 +82,7 @@ RSpec.describe CrudeMutant do
 
     it 'sends the results to ResultPrinter' do
       subject
-      expect(described_class::ResultPrinter).to have_received(:print).
+      expect(described_class::ResultPrinter).to have_received(:call).
         with(an_instance_of(described_class::Result))
     end
 

@@ -17,7 +17,7 @@ module CrudeMutant
   class NeutralCaseError < StandardError; end
 
   class << self
-    def start(file_path, test_command, section: 1, total_sections: 1, &block)
+    def start(file_path, test_command, section: 1, total_sections: 1, result_printer: ResultPrinter, &block)
       start_time = Time.now.to_f
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
@@ -63,7 +63,7 @@ module CrudeMutant
 
       stop_time = Time.now.to_f
       total_time = stop_time - start_time
-      ResultPrinter.print(
+      result_printer.call(
         Result.new(file_path, test_runs, total_time)
       )
     end
