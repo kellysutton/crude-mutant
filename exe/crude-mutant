@@ -21,11 +21,11 @@ OptionParser.new do |opts|
   end
 
   opts.on("-sSECTION", "--section=SECTION", "Number of current section when parallelizing") do |s|
-    args.section = s
+    args.section = s.to_i
   end
 
   opts.on("-tSECTION_TOTAL", "--section_total=SECTION_TOTAL", "Number of total sections when parallelizing") do |s|
-    args.section_total = s
+    args.section_total = s.to_i
   end
 
   opts.on("-cTEST_COMMAND", "--test_command=TEST_COMMAND", "Test command to run") do |t|
