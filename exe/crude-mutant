@@ -28,15 +28,19 @@ end
 
 printer = args.use_json_printer ? :json : :standard
 
-CrudeMutant.start(file_to_mutate, test_command, result_printer: printer) do |progress|
-  clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
-  $stdout.print clear_string
-  $stdout.print "\r"
+if printer == :json
+  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer)
+else
+  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer) do |progress|
+    clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
+    $stdout.print clear_string
+    $stdout.print "\r"
 
-  completed = "Completed #{progress.run_results.size}/#{progress.total_runs_to_perform}"
-  average = "Average time per run: #{progress.avg_time.round(2)} second(s)"
-  eta_time = (progress.total_runs_to_perform - progress.run_results.size) * progress.avg_time
-  eta = "Estimated time of completion: #{eta_time.round(2)} seconds"
-  $stdout.print "#{completed} #{average} #{eta}\r"
-  $stdout.flush
+    completed = "Completed #{progress.run_results.size}/#{progress.total_runs_to_perform}"
+    average = "Average time per run: #{progress.avg_time.round(2)} second(s)"
+    eta_time = (progress.total_runs_to_perform - progress.run_results.size) * progress.avg_time
+    eta = "Estimated time of completion: #{eta_time.round(2)} seconds"
+    $stdout.print "#{completed} #{average} #{eta}\r"
+    $stdout.flush
+  end
 end
