@@ -7,14 +7,26 @@ require "optparse"
 file_to_mutate = ARGV.pop
 test_command = ARGV.pop
 
-Options = Struct.new(:use_json_printer)
+Options = Struct.new(
+  :use_json_printer,
+  :section,
+  :section_total,
+)
 
-args = Options.new(false)
+args = Options.new(false, 1, 1)
 OptionParser.new do |opts|
   opts.banner = "Usage: crude-mutant [options] [test command] [file to mutate]"
 
   opts.on("-j", "--json", "Print JSON out to STDOUT") do |v|
     args.use_json_printer = v
+  end
+
+  opts.on("-sSECTION", "--name=SECTION", "Number of current section when parallelizing") do |s|
+    args.section = s
+  end
+
+  opts.on("-sSECTION_TOTAL", "--name=SECTION_TOTAL", "Number of total sectionswhen parallelizing") do |s|
+    args.section_total = s
   end
 end.parse!
 
@@ -29,9 +41,9 @@ end
 printer = args.use_json_printer ? :json : :standard
 
 if printer == :json
-  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer)
+  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer, section: args.section, total_sections: args.section_total)
 else
-  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer) do |progress|
+  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer, section: args.section, total_sections: args.section_total) do |progress|
     clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
     $stdout.print clear_string
     $stdout.print "\r"
