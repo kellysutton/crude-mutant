@@ -112,7 +112,7 @@ RSpec.describe CrudeMutant do
 
       context 'section and total_section is provided' do
         subject { described_class.start(file_path, test_command, section: section, total_sections: total_sections) }
-        let(:section) { 1 }
+        let(:section) { 0 }
         let(:total_sections) { 3 }
 
         it 'only executes the first line' do
@@ -127,7 +127,7 @@ RSpec.describe CrudeMutant do
         end
 
         context 'another section' do
-          let(:section) { 2 }
+          let(:section) { 1 }
 
           it 'only executes the second section' do
             subject
@@ -172,7 +172,7 @@ RSpec.describe CrudeMutant do
       subject { described_class.start(file_path, test_command, section: section, total_sections: total_sections) }
       let(:file_contents) { ('A'..'Z').to_a }
       let(:total_sections) { 6 }
-      let(:section) { 3 }
+      let(:section) { 2 }
 
       let(:file_loader) { CrudeMutant::FileLoader.new(file_path, file_contents) }
 
