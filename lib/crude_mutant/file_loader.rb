@@ -18,7 +18,6 @@ module CrudeMutant
       @file_path = file_path
       @contents_as_array = contents_as_array
     end
-    private_class_method :new
 
     def lines_in_file
       @contents_as_array.size
