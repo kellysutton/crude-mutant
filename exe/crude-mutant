@@ -4,8 +4,8 @@
 require "crude-mutant"
 require "optparse"
 
-test_command = ARGV[0]
-file_to_mutate = ARGV[1]
+file_to_mutate = ARGV.pop
+test_command = ARGV.pop
 
 Options = Struct.new(:use_json_printer)
 
