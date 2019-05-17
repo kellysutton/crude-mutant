@@ -20,11 +20,11 @@ OptionParser.new do |opts|
     args.use_json_printer = v
   end
 
-  opts.on("-sSECTION", "--name=SECTION", "Number of current section when parallelizing") do |s|
+  opts.on("-sSECTION", "--section=SECTION", "Number of current section when parallelizing") do |s|
     args.section = s
   end
 
-  opts.on("-sSECTION_TOTAL", "--name=SECTION_TOTAL", "Number of total sectionswhen parallelizing") do |s|
+  opts.on("-tSECTION_TOTAL", "--section_total=SECTION_TOTAL", "Number of total sections when parallelizing") do |s|
     args.section_total = s
   end
 
