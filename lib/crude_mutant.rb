@@ -8,6 +8,7 @@ require "crude_mutant/file_writer"
 require "crude_mutant/progress"
 require "crude_mutant/result"
 require "crude_mutant/result_printer"
+require "crude_mutant/json_result_printer"
 require "crude_mutant/run_result"
 require "crude_mutant/terminal_calculator"
 require "crude_mutant/version"
@@ -17,7 +18,9 @@ module CrudeMutant
   class NeutralCaseError < StandardError; end
 
   class << self
-    def start(file_path, test_command, section: 1, total_sections: 1, result_printer: ResultPrinter, &block)
+    def start(file_path, test_command, section: 1, total_sections: 1, result_printer: :standard, &block)
+      printer_klass = result_printer == :json ? JsonResultPrinter : ResultPrinter
+
       start_time = Time.now.to_f
       file = FileLoader.load(file_path)
       num_lines_in_file = file.lines_in_file
@@ -63,7 +66,7 @@ module CrudeMutant
 
       stop_time = Time.now.to_f
       total_time = stop_time - start_time
-      result_printer.call(
+      printer_klass.call(
         Result.new(file_path, test_runs, total_time)
       )
     end

@@ -2,9 +2,21 @@
 # frozen_string_literal: true
 
 require "crude-mutant"
+require "optparse"
 
 test_command = ARGV[0]
 file_to_mutate = ARGV[1]
+
+Options = Struct.new(:use_json_printer)
+
+args = Options.new(false)
+OptionParser.new do |opts|
+  opts.banner = "Usage: crude-mutant [options] [test command] [file to mutate]"
+
+  opts.on("-j", "--json", "Print JSON out to STDOUT") do |v|
+    args.use_json_printer = v
+  end
+end.parse!
 
 if !file_to_mutate || !test_command
   puts "Usage: crude-mutant [test command] [file to mutate]"
@@ -14,7 +26,9 @@ if !file_to_mutate || !test_command
   exit(1)
 end
 
-CrudeMutant.start(file_to_mutate, test_command) do |progress|
+printer = args.use_json_printer ? :json : :standard
+
+CrudeMutant.start(file_to_mutate, test_command, result_printer: printer) do |progress|
   clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
   $stdout.print clear_string
   $stdout.print "\r"

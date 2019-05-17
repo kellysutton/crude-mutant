@@ -95,6 +95,20 @@ RSpec.describe CrudeMutant do
       end
     end
 
+    context 'json printing' do
+      subject { described_class.start(file_path, test_command, result_printer: :json) }
+
+      before do
+        allow(described_class::JsonResultPrinter).to receive(:call)
+      end
+
+      it do
+        subject
+        expect(described_class::JsonResultPrinter).to have_received(:call).
+          with(an_instance_of(described_class::Result))
+      end
+    end
+
     context 'section and total_section is provided' do
       subject { described_class.start(file_path, test_command, section: section, total_sections: total_sections) }
       let(:section) { 1 }
