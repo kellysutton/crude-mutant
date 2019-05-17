@@ -4,18 +4,17 @@
 require "crude-mutant"
 require "optparse"
 
-file_to_mutate = ARGV.pop
-test_command = ARGV.pop
-
 Options = Struct.new(
   :use_json_printer,
   :section,
   :section_total,
+  :test_command,
+  :file_to_mutate,
 )
 
 args = Options.new(false, 1, 1)
 OptionParser.new do |opts|
-  opts.banner = "Usage: crude-mutant [options] [test command] [file to mutate]"
+  opts.banner = "Usage: crude-mutant [options]"
 
   opts.on("-j", "--json", "Print JSON out to STDOUT") do |v|
     args.use_json_printer = v
@@ -28,22 +27,30 @@ OptionParser.new do |opts|
   opts.on("-sSECTION_TOTAL", "--name=SECTION_TOTAL", "Number of total sectionswhen parallelizing") do |s|
     args.section_total = s
   end
+
+  opts.on("-cTEST_COMMAND", "--test_command=TEST_COMMAND", "Test command to run") do |t|
+    args.test_command = t
+  end
+
+  opts.on("-fFILE_TO_MUTATE", "--file=FILE_TO_MUTATE", "File to mutate for each run") do |t|
+    args.file_to_mutate = t
+  end
 end.parse!
 
-if !file_to_mutate || !test_command
-  puts "Usage: crude-mutant [test command] [file to mutate]"
+if !args.file_to_mutate || !args.test_command
+  puts "Usage: crude-mutant [options]"
   puts ""
   puts "Example:"
-  puts "  crude-mutant \"bundle exec rspec\" app/models/post.rb"
+  puts "  crude-mutant --test_command=\"bundle exec rspec\" --file=app/models/post.rb"
   exit(1)
 end
 
 printer = args.use_json_printer ? :json : :standard
 
 if printer == :json
-  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer, section: args.section, total_sections: args.section_total)
+  CrudeMutant.start(args.file_to_mutate, args.test_command, result_printer: printer, section: args.section, total_sections: args.section_total)
 else
-  CrudeMutant.start(file_to_mutate, test_command, result_printer: printer, section: args.section, total_sections: args.section_total) do |progress|
+  CrudeMutant.start(args.file_to_mutate, args.test_command, result_printer: printer, section: args.section, total_sections: args.section_total) do |progress|
     clear_string = ' ' * CrudeMutant::TerminalCalculator.new.calculate_length
     $stdout.print clear_string
     $stdout.print "\r"
