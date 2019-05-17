@@ -4,9 +4,6 @@
 require "crude-mutant"
 require "optparse"
 
-file_to_mutate = ARGV.pop
-test_command = ARGV.pop
-
 Options = Struct.new(
   :use_json_printer,
   :section,
@@ -17,7 +14,7 @@ Options = Struct.new(
 
 args = Options.new(false, 1, 1)
 OptionParser.new do |opts|
-  opts.banner = "Usage: crude-mutant [options] [test command] [file to mutate]"
+  opts.banner = "Usage: crude-mutant [options]"
 
   opts.on("-j", "--json", "Print JSON out to STDOUT") do |v|
     args.use_json_printer = v
@@ -31,7 +28,7 @@ OptionParser.new do |opts|
     args.section_total = s
   end
 
-  opts.on("-cTEST_COMMAND", "--name=TEST_COMMAND", "Test command to run") do |t|
+  opts.on("-cTEST_COMMAND", "--test_command=TEST_COMMAND", "Test command to run") do |t|
     args.test_command = t
   end
 
@@ -40,11 +37,11 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if !file_to_mutate || !test_command
-  puts "Usage: crude-mutant [test command] [file to mutate]"
+if !args.file_to_mutate || !args.test_command
+  puts "Usage: crude-mutant [options]"
   puts ""
   puts "Example:"
-  puts "  crude-mutant \"bundle exec rspec\" app/models/post.rb"
+  puts "  crude-mutant --test_command=\"bundle exec rspec\" --file=app/models/post.rb"
   exit(1)
 end
 
