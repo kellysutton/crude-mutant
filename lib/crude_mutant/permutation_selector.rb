@@ -22,14 +22,23 @@ module CrudeMutant
       section_size = (number_of_permutations.to_f / number_of_sections).ceil
       starting_number = section_number * section_size
 
-      result = []
+      buckets = Array.new(number_of_sections, 0)
 
-      section_size.times do
-        result << starting_number
-        starting_number += 1
+      current_bucket = 0
+      i = 0
+
+      while i < number_of_permutations do
+        buckets[current_bucket] += 1
+        i += 1
+        current_bucket = i % number_of_sections
       end
 
-      result
+      start = buckets.slice(0, section_number).sum
+      stop = start + buckets[section_number]
+
+      buckets[section_number].times.map do |i|
+        i + start
+      end
     end
   end
 end
