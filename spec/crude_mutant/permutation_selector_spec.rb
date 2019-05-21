@@ -15,5 +15,27 @@ RSpec.describe CrudeMutant::PermutationSelector do
     let(:section_number) { 0 }
 
     it { is_expected.to eq([0]) }
+
+    context 'section_number is -1' do
+      let(:section_number) { -1 }
+
+      it do
+        expect {
+          subject
+        }.to raise_error(ArgumentError, 'section_number must be 0 or greater')
+      end
+    end
+
+    context 'section_number is 1'
+    context 'section_number is 9'
+    context 'section_number is 10' do
+      let(:section_number) { 10 }
+
+      it do
+        expect {
+          subject
+        }.to raise_error(ArgumentError, 'section_number must be less than number_of_sections - 1')
+      end
+    end
   end
 end
