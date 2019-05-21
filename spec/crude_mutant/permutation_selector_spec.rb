@@ -64,6 +64,18 @@ RSpec.describe CrudeMutant::PermutationSelector do
 
         it { is_expected.to eq([5, 6, 7, 8, 9]) }
       end
+
+      context 'number_of_permutations is odd' do
+        let(:number_of_permutations) { 11 }
+
+        it { is_expected.to eq([0, 1, 2, 3, 4, 5]) }
+
+        context 'section_number is 1' do
+        let(:section_number) { 1 }
+
+        it { is_expected.to eq([6, 7, 8, 9, 10]) }
+      end
+      end
     end
 
     context 'number_of_sections is 0' do
