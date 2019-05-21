@@ -25,7 +25,7 @@ module CrudeMutant
       original_file_contents = File.read(file_path)
       permuter = LinePermuter.new(original_file_contents)
 
-      permutation_to_run = PermutationSelector.select(
+      permutations_to_run = PermutationSelector.select(
         number_of_permutations: permuter.number_of_permutations,
         number_of_sections: total_sections,
         section_number: section,
@@ -45,13 +45,13 @@ module CrudeMutant
             command: test_command,
           )
 
-          result = RunResult.new(
+          result = [RunResult.new(
             file_path,
             permutation,
             success,
             permuter.line(permutation),
             bench,
-          )
+          )]
 
           if block_given?
             block.call(
@@ -82,7 +82,7 @@ module CrudeMutant
       bench = Benchmark.measure do
         File.write(file_path, file_contents)
 
-        success = Executor.call(test_command)
+        success = Executor.call(command)
       end
 
       [success, bench]

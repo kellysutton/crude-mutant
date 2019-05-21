@@ -12,7 +12,7 @@ Options = Struct.new(
   :file_to_mutate,
 )
 
-args = Options.new(false, 1, 1)
+args = Options.new(false, 0, 1)
 OptionParser.new do |opts|
   opts.banner = "Usage: crude-mutant [options]"
 
