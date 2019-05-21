@@ -33,7 +33,7 @@ module CrudeMutant
         current_bucket = i % number_of_sections
       end
 
-      start = buckets.slice(0, section_number).sum
+      start = buckets.slice(0, section_number).reduce(:+)
       stop = start + buckets[section_number]
 
       buckets[section_number].times.map do |i|
