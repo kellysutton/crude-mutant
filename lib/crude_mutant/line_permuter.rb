@@ -23,6 +23,10 @@ module CrudeMutant
         contents_as_array.slice(permutation_number + 1, number_of_permutations)).join("\n")
     end
 
+    def line(line_number)
+      contents_as_array.fetch(line_number)
+    end
+
     private
 
     def contents_as_array

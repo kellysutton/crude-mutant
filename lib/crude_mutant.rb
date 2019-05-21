@@ -3,8 +3,6 @@
 require "benchmark"
 
 require "crude_mutant/executor"
-require "crude_mutant/file_loader"
-require "crude_mutant/file_writer"
 require "crude_mutant/json_result_printer"
 require "crude_mutant/line_permuter"
 require "crude_mutant/permutation_selector"
@@ -24,11 +22,14 @@ module CrudeMutant
       printer_klass = result_printer == :json ? JsonResultPrinter : ResultPrinter
 
       start_time = Time.now.to_f
-      file = FileLoader.load(file_path)
-      num_lines_in_file = file.lines_in_file
-      section_size = (num_lines_in_file.to_f / total_sections).ceil
-      starting_line_number = section * section_size - 1
-      stopping_line_number = starting_line_number + section_size
+      original_file_contents = File.read(file_path)
+      permuter = LinePermuter.new(original_file_contents)
+
+      permutation_to_run = PermutationSelector.select(
+        number_of_permutations: permuter.number_of_permutations,
+        number_of_sections: total_sections,
+        section_number: section,
+      )
 
       initial_success = Executor.call(test_command)
 
@@ -37,24 +38,25 @@ module CrudeMutant
       end
 
       begin
-        line_number = starting_line_number
-        test_runs = file.contents_as_array.reduce([]) do |acc, contents|
-          line_number += 1
+        test_runs = permutations_to_run.reduce([]) do |acc, permutation|
+          success, bench = perform_run(
+            file_path: file_path,
+            file_contents: permuter.take(permutation),
+            command: test_command,
+          )
 
-          if (starting_line_number..stopping_line_number).cover?(line_number) && contents.strip.size != 0
-            result = [perform_run(
-              file,
-              test_command,
-              line_number
-            )]
-          else
-            result = [NullRunResult.new(line_number)]
-          end
+          result = RunResult.new(
+            file_path,
+            permutation,
+            success,
+            permuter.line(permutation),
+            bench,
+          )
 
           if block_given?
             block.call(
               Progress.new(
-                num_lines_in_file,
+                permutations_to_run.size,
                 acc + result
               )
             )
@@ -63,7 +65,7 @@ module CrudeMutant
           acc + result
         end
       ensure
-        FileWriter.write(file_path, file.contents_as_array)
+        File.write(file_path, original_file_contents)
       end
 
       stop_time = Time.now.to_f
@@ -75,21 +77,15 @@ module CrudeMutant
 
     private
 
-    def perform_run(file_loader, test_command, line_number)
+    def perform_run(file_path:, file_contents:, command:)
       success = false
       bench = Benchmark.measure do
-        FileWriter.write(file_loader.file_path, file_loader.without_line(line_number))
+        File.write(file_path, file_contents)
 
         success = Executor.call(test_command)
       end
 
-      RunResult.new(
-        file_loader.file_path,
-        line_number,
-        success,
-        file_loader.contents_as_array[line_number],
-        bench
-      )
+      [success, bench]
     end
   end
 end
