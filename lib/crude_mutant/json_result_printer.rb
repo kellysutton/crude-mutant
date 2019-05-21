@@ -9,8 +9,8 @@ module CrudeMutant
         stream.print(
           JSON.dump({
             result.file_path => {
-              passed_lines: result.run_results.select(&:success?).map(&:line_number),
-              failed_lines: result.run_results.reject(&:success?).map(&:line_number),
+              passed_lines: result.run_results.reject(&:success?).map(&:line_number),
+              failed_lines: result.run_results.select(&:success?).map(&:line_number),
             }
           }),
         )
