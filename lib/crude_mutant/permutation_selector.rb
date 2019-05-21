@@ -19,7 +19,17 @@ module CrudeMutant
         raise ArgumentError, 'number_of_sections must less than number_of_permutations'
       end
 
-      [section_number]
+      section_size = (number_of_permutations.to_f / number_of_sections).ceil
+      starting_number = section_number * section_size
+
+      result = []
+
+      section_size.times do
+        result << starting_number
+        starting_number += 1
+      end
+
+      result
     end
   end
 end
